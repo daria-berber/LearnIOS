@@ -21,7 +21,6 @@ struct ContentView: View {
                     .padding(.bottom, 32)
                 Text("28°C")
                 Spacer(minLength: 0)
-                te
                 
             }
         }
