@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var isNight = false
+    
     var body: some View {
         ZStack {
-            BackgroundView(topColor: .blue,
-                           bottomColor: Color("lightBlue"))
+            BackgroundView(isNight: isNight)
             VStack {
                 CityTextView(cityName: "Cupertino, CA")
                 
-                MainWeatherStatusView (imageName: "cloud.sun.fill",
+                MainWeatherStatusView (imageName: isNight ? "sparkles" :
+                                       "cloud.sun.fill",
                                        temperature: 28)
                 
                 
@@ -47,11 +50,11 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                    print("Tapped")
+                    isNight.toggle()
                 } label : {
                     WeatherButton(title: "Change Time of a Day",
-                                  textColour: .blue,
-                                  backgroundColour: .white)
+                                  textColour: .white,
+                                  backgroundColour: .mint)
                 }
                 
                 Spacer()
@@ -78,8 +81,9 @@ struct WeatherdaysView: View {
                 .foregroundColor(.white)
             
             Image(systemName: imageName)
-                .renderingMode(.original)
+                .symbolRenderingMode(.multicolor)
                 .resizable()
+                .foregroundStyle(.orange)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
             
@@ -93,14 +97,18 @@ struct WeatherdaysView: View {
 }
 
 struct BackgroundView: View {
-    var topColor: Color
-    var bottomColor: Color
+    
+    var isNight: Bool
     
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [topColor, bottomColor]),
-                       startPoint: .topTrailing ,
-                       endPoint: .bottomTrailing)
-        .edgesIgnoringSafeArea(.all)
+//        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : .lightBlue]),
+//                       startPoint: .topTrailing ,
+//                       endPoint: .bottomTrailing)
+//        .ignoresSafeArea(.all)
+        
+        ContainerRelativeShape()
+            .fill(isNight ? Color.black.gradient : Color.blue.gradient)
+            .ignoresSafeArea(.all)
     }
 }
 
